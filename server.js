@@ -4,6 +4,8 @@ import connectDatabase from "./config/MongoDb.js";
 import importData from "./dataImport.js";
 import userRoute from "./routers/userRoute.js";
 import cors from "cors";
+import conversationRoute from "./routers/conversationRouter.js";
+import messageRoute from "./routers/messageRouter.js";
 
 dotenv.config();
 connectDatabase();
@@ -17,6 +19,8 @@ app.use(cors());
 //api
 app.use("/api/import", importData);
 app.use("/api/user", userRoute);
+app.use("/api/conversation", conversationRoute);
+app.use("/api/conversation", messageRoute);
 
 app.get("/", (req, res) => {
     res.send("API is running");
