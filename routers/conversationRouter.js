@@ -11,12 +11,12 @@ conversationRoute.post("/create",
         try{
             const conversationExist = await Coversation.findOne({ membersId: {$all: [membersData.receiverId, membersData.senderId]} });
             if(conversationExist){
-                res.status(201).json({ message: "Conversation present" });
+                res.status(201).json(conversationExist);
             }
             else{
                 const conversation = new Coversation({membersId: [membersData.receiverId, membersData.senderId]});
                 await conversation.save();
-                res.status(201).json({ message: "Conversation created" });
+                res.status(201).json(conversation);
             }
         }
         catch(error){

@@ -13,7 +13,8 @@ messageRoute.post("/msg-send",
                 conversationId: membersData.conversationId,
                 receiverId: membersData.receiverId,
                 senderId: membersData.senderId,
-                message: membersData.message
+                message: membersData.message,
+                type:  membersData.type
             });
             await message.save();
             res.status(201).json({ message: "message created" });
