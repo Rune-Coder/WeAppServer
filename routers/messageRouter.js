@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { response } from 'express';
 import asyncHandler from 'express-async-handler';
 import Messages from '../models/messageModel.js';
 

@@ -6,6 +6,7 @@ import userRoute from "./routers/userRoute.js";
 import cors from "cors";
 import conversationRoute from "./routers/conversationRouter.js";
 import messageRoute from "./routers/messageRouter.js";
+import fileRoute from "./routers/fileRouter.js";
 
 dotenv.config();
 connectDatabase();
@@ -21,6 +22,7 @@ app.use("/api/import", importData);
 app.use("/api/user", userRoute);
 app.use("/api/conversation", conversationRoute);
 app.use("/api/conversation", messageRoute);
+app.use("/api/conversation", fileRoute);
 
 app.get("/", (req, res) => {
     res.send("API is running");
