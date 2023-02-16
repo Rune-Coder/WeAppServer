@@ -7,6 +7,7 @@ import cors from "cors";
 import conversationRoute from "./routers/conversationRouter.js";
 import messageRoute from "./routers/messageRouter.js";
 import fileRoute from "./routers/fileRouter.js";
+import { Server } from 'socket.io';
 
 dotenv.config();
 connectDatabase();
@@ -30,5 +31,37 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, console.log("server running in port "+ PORT));
+const server = app.listen(PORT, console.log("server running in port "+ PORT));
+
+//socket connection
+
+const io = new Server(server,{
+    cors: {
+        origin:  "http://localhost:3000"
+    }
+});
+
+var users = [];
+
+function addUser(userData, socketId){
+    !users.some(user => user.sub == userData.sub) && users.push({ ...userData, socketId });
+}
+
+function getUser(userId){
+    return users.find(user => user.sub === userId);
+}
+
+io.on('connection', (socket) => {
+    console.log('New websocket connection');
+
+    socket.on("addUsers", userData =>{
+        addUser(userData, socket.id);
+        io.emit("getUsers", users);
+    });
+
+    socket.on("sendMessage", data =>{
+        const user = getUser(data.receiverId);
+        io.to(user.socketId).emit("getMessage", data);
+    });
+})
 
