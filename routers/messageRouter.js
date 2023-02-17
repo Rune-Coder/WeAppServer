@@ -1,5 +1,6 @@
 import express, { response } from 'express';
 import asyncHandler from 'express-async-handler';
+import Coversation from '../models/conversationModel.js';
 import Messages from '../models/messageModel.js';
 
 const messageRoute = express.Router();
@@ -18,6 +19,14 @@ messageRoute.post("/msg-send",
             });
             await message.save();
             res.status(201).json({ message: "message created" });
+
+            await Coversation.findOneAndUpdate({
+                 membersId: {$all: [membersData.receiverId, membersData.senderId]} 
+                },
+                {
+                    message: membersData.message
+                }
+            );
             
         }
         catch(error){

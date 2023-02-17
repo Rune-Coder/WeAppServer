@@ -44,7 +44,11 @@ const io = new Server(server,{
 var users = [];
 
 function addUser(userData, socketId){
-    !users.some(user => user.sub == userData.sub) && users.push({ ...userData, socketId });
+    !users.some(user => user.sub === userData.sub) && users.push({ ...userData, socketId });
+}
+
+function removeUser(socketId){
+    users = users.filter(user => user.socketId !== socketId);
 }
 
 function getUser(userId){
@@ -62,6 +66,11 @@ io.on('connection', (socket) => {
     socket.on("sendMessage", data =>{
         const user = getUser(data.receiverId);
         io.to(user.socketId).emit("getMessage", data);
+    });
+
+    socket.on("disconnect", () =>{
+        removeUser(socket.id);
+        io.emit("getUsers", users);
     });
 })
 
