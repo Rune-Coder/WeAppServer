@@ -37,7 +37,7 @@ const server = app.listen(PORT, console.log("server running in port "+ PORT));
 
 const io = new Server(server,{
     cors: {
-        origin:  "http://localhost:3000"
+        origin:  "https://weapp-messenger.netlify.app"
     }
 });
 
