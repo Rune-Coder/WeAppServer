@@ -1,3 +1,3 @@
-const url = "http://localhost:5000";
+const url = "https://weappserver-production.up.railway.app";
 
 export default url;
